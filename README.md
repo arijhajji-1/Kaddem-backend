@@ -3,7 +3,6 @@
 * [General info](#general-info)
 * [Was made by :](#Made-by)
 * [Technologies](#technologies)
-* [Setup](#setup)
 
 ## General info
 This project is an e-commerce website.
