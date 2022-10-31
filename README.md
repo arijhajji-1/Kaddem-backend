@@ -1,4 +1,4 @@
-# Projet Spring-Boot 
+# Projet Angular-Spring-Boot 
 ## Table of contents
 * [General info](#general-info)
 * [Was made by :](#Made-by)
@@ -20,5 +20,6 @@ this project was made by:
 ## Technologies
 Project is created with:
 * Spring Boot
+*Angular
 
 	
