@@ -20,6 +20,6 @@ this project was made by:
 ## Technologies
 Project is created with:
 * Spring Boot
-*Angular
+* Angular
 
 	
