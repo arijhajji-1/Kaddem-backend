@@ -22,11 +22,3 @@ Project is created with:
 * Spring Boot
 
 	
-## Setup
-To run this project, use:
-
-```
-maven update project 
-
-run as java application
-```
