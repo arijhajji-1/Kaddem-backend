@@ -13,4 +13,6 @@ public interface IDepartementService {
     Departement retrieveDepartement (Integer idDepart);
 
     Departement affecterEtudiant(Integer idDep, Integer idEtudiant) ;
+
+    void removeDepartement(Integer idDep);
 }
