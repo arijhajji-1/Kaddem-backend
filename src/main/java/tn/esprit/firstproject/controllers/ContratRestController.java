@@ -3,6 +3,7 @@ package tn.esprit.firstproject.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.firstproject.entities.Contrat;
 import tn.esprit.firstproject.entities.Etudiant;
@@ -16,6 +17,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -67,6 +70,20 @@ public class ContratRestController {
         return iContratService.contratBetween2dates(start,end);
     }
 
+@GetMapping("/notification")
+    public String notificationContrat(){
+        return iContratService.notificationContrat();
+    }
+    @GetMapping("/barChart")
+    public String getAllContrat(Model model) {
+        List<String> nameList= iEtudiantService.retrieveAllEtudiants().stream().map(Etudiant::getNom).collect(Collectors.toList());
+        model.addAttribute("nameList", nameList);
+        return "barChart";
+    }
 
 
-}
+
+    }
+
+
+

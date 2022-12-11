@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import tn.esprit.firstproject.entities.Contrat;
 
+import javax.swing.text.StyledEditorKit;
 import java.util.Date;
 import java.util.List;
 
@@ -20,4 +21,7 @@ public interface IContratRepository extends CrudRepository<Contrat, Integer> {
 
     @Query("select DATEDIFF(c.dateFinContrat,current_date) from Contrat c where c.idContrat = ?1")
     Integer DateDiffContrat(Integer idContrat);
+    @Query("select c from Contrat c where c.dateFinContrat = current_date")
+    List<Contrat> finContrat();
+
 }

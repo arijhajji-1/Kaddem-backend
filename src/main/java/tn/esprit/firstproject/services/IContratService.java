@@ -22,4 +22,5 @@ public interface IContratService {
 
     List<Contrat> contratBetween2dates(Date startDate, Date endDate);
     //String retrieveAndUpdateStatusContrat();
+   String notificationContrat();
 }

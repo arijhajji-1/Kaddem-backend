@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,20 +16,24 @@ import java.util.Set;
 public class Etudiant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idEtudiant ;
-    private String prenom ;
-    private String nom ;
+    private Integer idEtudiant;
+    private String prenom;
+    private String nom;
 
-@Enumerated(EnumType.STRING)
-private Option op;
+    @Enumerated(EnumType.STRING)
+    private Option op;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     Departement departement;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "etudiant")
 
-    private Set<Contrat> contrats ;
+    private Set<Contrat> contrats;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Equipe> equipes ;
+    private Set<Equipe> equipes;
+    @OneToMany()
+    @JoinColumn(name = "idEtudiant")
+    @JsonIgnore
+    private List<Notification> notifications;
 }
