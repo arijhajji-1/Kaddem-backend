@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,9 +50,31 @@ public class ContratRestController {
     public void removeContrat(@PathVariable("id-contrat")Integer id){
         iContratService.removeContrat(id);
     }
-    @GetMapping("/nb-contrat/{startDate}/{endDate}")
-    public Integer nbContratsValides(@PathVariable("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate, @PathVariable("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date  endDate){
+    @GetMapping("nbContratsValides/{startDate}/{endDate}")
+    public Integer nbContratsValides(@PathVariable("startDate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                     @PathVariable("endDate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate
+    ) {
         return iContratService.nbContratsValides(startDate,endDate);
+    }
+    @GetMapping("/pagination/{number}/{page}")
+    public List<Contrat> pagination(@PathVariable("number") Integer number , @PathVariable("page") Integer page){
+        List<Contrat> all = iContratService.retrieveAllContrats();
+        List<Contrat> newList = new ArrayList<Contrat>() ;
+
+        int debut = 1 ;
+        if (page>1) {
+            debut = number*(page-1) +1  ;
+        }
+        int fin = debut + number -1 ;
+        int count = 1 ;
+        for (Contrat e : all ) {
+            if ((count>=debut)&&(count<=fin)) {
+                newList.add(e) ;
+            }
+            count++ ;
+        }
+
+        return newList ;
     }
     @PutMapping("/{idContrat}/{idEtudiant}")
     Contrat aasignContratToEtudiant(
@@ -74,16 +97,15 @@ public class ContratRestController {
     public String notificationContrat(){
         return iContratService.notificationContrat();
     }
-    @GetMapping("/barChart")
-    public String getAllContrat(Model model) {
-        List<String> nameList= iEtudiantService.retrieveAllEtudiants().stream().map(Etudiant::getNom).collect(Collectors.toList());
-        model.addAttribute("nameList", nameList);
-        return "barChart";
+
+@GetMapping("/find/{datedeb}/{datefin}")
+    public Contrat retrieveContratByDate( @PathVariable("datedeb") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateDebut, @PathVariable("datefin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFin) {
+        return iContratService.retrieveContratByDate(dateDebut, dateFin);
     }
 
 
 
-    }
+}
 
 
 

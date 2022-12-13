@@ -23,5 +23,7 @@ public interface IContratRepository extends CrudRepository<Contrat, Integer> {
     Integer DateDiffContrat(Integer idContrat);
     @Query("select c from Contrat c where c.dateFinContrat = current_date")
     List<Contrat> finContrat();
-
+    //find contrat by date debut contrat and date fin contrat
+    @Query("select c from Contrat c where c.dateDebutContrat = ?1 and c.dateFinContrat = ?2")
+    Contrat findContratByDateDebutContratAndDateFinContrat(Date dateDebut, Date dateFin);
 }

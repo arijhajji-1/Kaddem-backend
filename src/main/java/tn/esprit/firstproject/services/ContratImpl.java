@@ -13,7 +13,9 @@ import tn.esprit.firstproject.repositories.IEtudiantRepository;
 import tn.esprit.firstproject.repositories.INotificationRepository;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +54,19 @@ public class ContratImpl implements IContratService {
 
     @Override
     public Integer nbContratsValides(Date startDate, Date endDate) {
-        return contratRepository.nbContratsValides(startDate, endDate);
+        List<Contrat> contrats = (List<Contrat>) contratRepository.findAll();
+        Set<Contrat> contrats1 = new HashSet<>();
+        for(int i=0;i<contrats.size();i++){
+            if(contrats.get(i).getArchive()==true &&
+                    ( (contrats.get(i).getDateDebutContrat().after(startDate) && contrats.get(i).getDateDebutContrat().before(endDate))
+                            || (contrats.get(i).getDateFinContrat().after(startDate) && contrats.get(i).getDateFinContrat().before(endDate))
+                            || (contrats.get(i).getDateDebutContrat().before(startDate) && contrats.get(i).getDateFinContrat().after(endDate))
+                    )
+            ){
+                contrats1.add(contrats.get(i));
+            }
+        }
+        return contrats1.size();
     }
 
     @Override
@@ -64,6 +78,10 @@ public class ContratImpl implements IContratService {
         contratRepository.save(ce);
         etudiantRepository.save(e);
         return ce;
+    }
+    //recherche contrat par date
+    public Contrat retrieveContratByDate(Date dateDebut, Date dateFin) {
+        return contratRepository.findContratByDateDebutContratAndDateFinContrat(dateDebut, dateFin);
     }
 
     @Override
@@ -91,8 +109,8 @@ public class ContratImpl implements IContratService {
     }
 
     @Override
-    @Scheduled(cron = "0 */5 * * * *")
-    //@Scheduled(cron = "0 0 20 * * ?") // every day at 12:00
+   // @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(cron = "0 0 20 * * ?") // every day at 12:00
     //@Scheduled(fixedRate = 5000)
     public String notificationContrat() {
         String result = "";
@@ -100,7 +118,7 @@ public class ContratImpl implements IContratService {
         for (Contrat c : listContrat) {
             if (contratRepository.finContrat() != null) {
                 notifRepository.save(new Notification("fin contrat", c.getEtudiant()));
-                result = "Notification envoyée";
+                result = "notification envoyée";
             }
         }
         return result;
