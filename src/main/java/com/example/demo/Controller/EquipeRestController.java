@@ -14,8 +14,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/equipe")
-@CrossOrigin(origins = "http://localhost:4200",allowedHeaders = "*")
-
+//@CrossOrigin(origins = "http://localhost:4200",allowedHeaders = "*")
+@CrossOrigin(origins = "*")
 public class EquipeRestController {
     private final IEquipeService iEquipeService;
 

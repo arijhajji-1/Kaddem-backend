@@ -18,6 +18,7 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @RestController
 @RequestMapping("/contrat")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ContratRestController {
     private final IContratService iContratService;
     private final IEtudiantRepo etudiantRepo;

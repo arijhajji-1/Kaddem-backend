@@ -5,10 +5,7 @@ import com.example.demo.Entities.Departement;
 import com.example.demo.Entities.Equipe;
 import com.example.demo.Entities.Etudiant;
 import com.example.demo.Repository.IEtudiantRepo;
-import com.example.demo.Service.EtudiantPDFExporter;
-import com.example.demo.Service.IDepartementService;
-import com.example.demo.Service.IEquipeService;
-import com.example.demo.Service.IEtudiantService;
+import com.example.demo.Service.*;
 import com.lowagie.text.DocumentException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +25,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/etudiant")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class EtudiantRestController {
     private final IEtudiantService iEtudiantService, etudiantService;
     private final IEquipeService equipeService;
@@ -147,6 +146,44 @@ public class EtudiantRestController {
         EtudiantPDFExporter exporter = new EtudiantPDFExporter(listUsers);
         exporter.export(response);
 
+    }
+
+
+    @GetMapping("/export-to-excel")
+    public void exportIntoExcelFile(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=student" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List <Etudiant> etudiantList = (List<Etudiant>) etudiantRepository.findAll();
+        ExcelGenerator generator = new ExcelGenerator(etudiantList);
+        generator.generateExcelFile(response);
+    }
+
+
+    @GetMapping("/pagination/{number}/{page}")
+    public List<Etudiant> pagination(@PathVariable("number") Integer number , @PathVariable("page") Integer page){
+        List<Etudiant> all = etudiantService.retrieveAllEtudiants() ;
+        List<Etudiant> newList = new ArrayList<Etudiant>() ;
+
+        int debut = 1 ;
+        if (page>1) {
+            debut = number*(page-1) +1  ;
+        }
+        int fin = debut + number -1 ;
+        int count = 1 ;
+        for (Etudiant e : all ) {
+            if ((count>=debut)&&(count<=fin)) {
+                newList.add(e) ;
+            }
+            count++ ;
+        }
+
+        return newList ;
     }
 
 
