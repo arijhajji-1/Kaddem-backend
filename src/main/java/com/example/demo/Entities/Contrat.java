@@ -1,6 +1,7 @@
 package com.example.demo.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,19 +22,18 @@ public class Contrat implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idContrat;
-
-
-
-    private Date dateFinContrat;
-    private Date dateDebutContrat;
-    private boolean archive;
-    private int montantContrat;
-    @Enumerated(EnumType.ORDINAL)
-    private Specialite specialite;
-    @JsonBackReference
-@ManyToOne(fetch = FetchType.EAGER)
-    Etudiant etudiant;
+    private Integer idContrat ;
+    @Temporal (TemporalType.DATE)
+    private Date dateDebutContrat ;
+    @Temporal (TemporalType.DATE)
+    private Date dateFinContrat ;
+    @Enumerated(EnumType.STRING)
+    private Specialite specialite ;
+    private Boolean archive ;
+    private Integer montantContrat ;
+    @JsonIgnoreProperties({"contrats"})
+    @ManyToOne
+    Etudiant etudiant  ;
 
 
 }
