@@ -71,8 +71,13 @@ public class ExperienceController {
     public Experience assignEtudiantToExperience(@PathVariable("id") Integer id , @PathVariable("idEtudiant") Integer idEtudiant){
         return  ExperienceService.assignEtudiantToExperience(id,idEtudiant);
     }
+
+
+
     @GetMapping("/export/pdf")
     public ResponseEntity<InputStreamResource> exportTermsPdf(){
+
+
         List<Experience> experience = (List<Experience>) ExperienceService.retrieveAllExperiences();
         ByteArrayInputStream bais = exportExperienceService.experiencesPDFRepot(experience);
     HttpHeaders headers = new HttpHeaders();
@@ -83,14 +88,23 @@ public class ExperienceController {
             .contentType(org.springframework.http.MediaType.APPLICATION_PDF)
             .body(new InputStreamResource(bais));
     }
-    @GetMapping("/export/excel")
+
+
+
+
+
+    @GetMapping("/export/excelequipe")
     public ResponseEntity<InputStreamResource> exportExperiencesExcel() throws IOException {
         List<Experience> experience = (List<Experience>) ExperienceService.retrieveAllExperiences();
         ByteArrayInputStream bais = exportExperienceService.experienceExcelReport(experience);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=experiences.xlsx");
+        headers.add("Content-Disposition", "inline; filename=equipes.xlsx");
         return ResponseEntity.ok().headers(headers).body(new InputStreamResource(bais));
     }
+
+
+
+
     //methode1 : avec Path Variable
     @GetMapping("/search/{lieu}")
     public ResponseEntity<?> searchByTitreDuProfil(@PathVariable String lieu, @PageableDefault(sort = "lieu", direction = Sort.Direction.ASC) Pageable pageable) {

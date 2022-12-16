@@ -130,5 +130,15 @@ public class UniversiteRestController {
 
         iUniversiteService.ajouterEtAffecterlisteDepart(list,idUniv);
 }
+
+
+
+    @PutMapping("/deleteImage/{iduniv}/{idimg}")
+    void deleteImage(@PathVariable("iduniv") Integer idU,@PathVariable("idimg") Long idm){
+        iUniversiteService.deleteImage(idU,idm);
+    }
+
+
+
 }
 

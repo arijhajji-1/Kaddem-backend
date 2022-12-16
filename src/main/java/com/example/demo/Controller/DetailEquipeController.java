@@ -39,6 +39,11 @@ public class DetailEquipeController {
 //        return detailEquipeServiceImp.retrieveById(id);
 //    }
 
+
+
+
+  ///////////////////////////////////////////
+
     @DeleteMapping("/deleteDetailEquipe/{id}")
     @ResponseBody
     public void supprimerDetailEquipe(@PathVariable("id") Integer id) {

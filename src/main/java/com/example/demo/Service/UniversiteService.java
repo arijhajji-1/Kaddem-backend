@@ -5,6 +5,7 @@ import com.example.demo.Entities.ImageModel;
 import com.example.demo.Entities.Universite;
 import com.example.demo.Repository.IDepartementRepo;
 import com.example.demo.Repository.IUniversiteRepo;
+import com.example.demo.Repository.ImageRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,7 @@ public class UniversiteService implements IUniversiteService{
    IUniversiteRepo iUniversiteRepo;
     @Autowired
     IDepartementRepo iDepartementRepo;
+    private final ImageRepo imageRepo;
 
 
     @Override
@@ -117,6 +119,19 @@ public class UniversiteService implements IUniversiteService{
     @Override
     public Integer countUniversites() {
         return iUniversiteRepo.countUniversites();
+    }
+
+    @Override
+    public void deleteImage(Integer idUniver, Long idImage) {
+        Universite u = iUniversiteRepo.findById(idUniver).get();
+        //List<ImageModel> listImage= (List<ImageModel>) imageRepo.findAll();
+        ImageModel img=imageRepo.findById(idImage).get();
+
+        if(u.getImages().contains(img)) {
+            u.getImages().remove(img);
+        }
+        iUniversiteRepo.save(u);
+
     }
 
 
