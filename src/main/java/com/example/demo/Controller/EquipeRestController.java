@@ -132,7 +132,9 @@ public class EquipeRestController {
     ///////////////////exporter excel///////////////////////////
 
     @GetMapping("/export/excel")
+
     public ResponseEntity<InputStreamResource> exportExperiencesExcel() throws IOException {
+
         List<Equipe> equipes = (List<Equipe>) iEquipeService.retrieveAllEquipes();
         ByteArrayInputStream bais = iEquipeService.experienceExcelReport(equipes);
         HttpHeaders headers = new HttpHeaders();
